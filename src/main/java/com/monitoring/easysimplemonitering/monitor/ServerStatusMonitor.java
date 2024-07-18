@@ -5,6 +5,7 @@ import com.monitoring.easysimplemonitering.metricinfo.ComplicateMetricInfo;
 import com.monitoring.easysimplemonitering.email.SimpleEmailService;
 import com.monitoring.easysimplemonitering.utility.MetricCalOperand;
 import com.monitoring.easysimplemonitering.utility.WarnSend;
+import jakarta.annotation.Nullable;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import java.util.Map;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class ServerStatusMonitor {
     private final MetricsEndpoint metricsEndpoint;
     private static final String DISK_METRIC= "disk.free";
@@ -37,16 +39,12 @@ public class ServerStatusMonitor {
     @Value("${easy.monitoring.memory.usage.threshold:80}")
     public double memoryUsageThreshold;
 
+    @Nullable
     private final SimpleEmailService emailService;
 
-    private final String METRIC_RESULT_MSG_FORMAT = "metric %s : result = %s";
+    private static final String METRIC_RESULT_MSG_FORMAT = "metric %s : result = %s";
     public Map<String, CommonMetricInfo> commonMetricMap;
 
-    public ServerStatusMonitor(SimpleEmailService simpleEmailService,
-                               MetricsEndpoint metricsEndpoint){
-        this.metricsEndpoint = metricsEndpoint;
-        this.emailService = simpleEmailService;
-    }
 
 
     @PostConstruct
@@ -79,15 +77,13 @@ public class ServerStatusMonitor {
 
     public void commonMetricMonitoring(){
         //common의 경우
-        commonMetricMap.keySet().stream()
+        commonMetricMap.keySet()
                 .forEach((key) -> {
                     CommonMetricInfo metricInfo = commonMetricMap.get(key);
                     CommonMonitor commonMonitor = new CommonMonitor(metricsEndpoint, metricInfo);
                     if(commonMonitor.isOverThreshold() && warnSendHolder.get().get(key).isSendable()){
                         double result = commonMonitor.getMetricsResult();
-                        emailService.sendAlter(String.format(metricInfo.warnMsg(),commonMonitor.getMetricsResult(),result));
-                        log.info(metricInfo.valueThreshold() + "");
-                        log.info(String.format(METRIC_RESULT_MSG_FORMAT, metricInfo.metric(),result +""));
+                        sendAlter(metricInfo,result);
                     }
                 });
     }
@@ -95,23 +91,28 @@ public class ServerStatusMonitor {
 
     public void complicateMetricMonitoring(){
         //메트릭 조합 모니터링 부분
-        complicateMetricInfoMap.keySet().stream()
+        complicateMetricInfoMap.keySet()
                 .forEach((key) -> {
                     ComplicateMetricInfo metricInfo = complicateMetricInfoMap.get(key);
                     ComplicateMonitor complicateMonitor = new ComplicateMonitor(metricsEndpoint, metricInfo);
                     if(complicateMonitor.isOverThreshold() && warnSendHolder.get().get(key).isSendable()){
                         double result = complicateMonitor.getMetricsResult();
-                        emailService.sendAlter(String.format(metricInfo.warnMsg(),result + ""));
-                        log.info(String.format(METRIC_RESULT_MSG_FORMAT, metricInfo.metric(),result +""));
+                        sendAlter(metricInfo,result);
                     }
                 });
 
     }
 
-    @Scheduled(fixedRateString = "${easy.monitoring.send.duration}")
+    @Scheduled(fixedRateString = "${easy.monitoring.send.duration:3600000}")
     public void serverMonitoring(){
         commonMetricMonitoring();
         complicateMetricMonitoring();
     }
 
+    public void sendAlter(MetricInfo metricInfo,double result){
+        if(emailService != null) {
+            emailService.sendAlter(String.format(metricInfo.getWarnMsg(),result + ""));
+        }
+        log.info(String.format(METRIC_RESULT_MSG_FORMAT, metricInfo.getMetric(),result +""));
+    }
 }

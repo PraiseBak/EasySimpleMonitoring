@@ -19,7 +19,7 @@ public class ComplicateMonitor implements ServerMonitorStrategy{
     @Override
     public double getMetricsResult() {
         double firstResult = MetricUtility.getMetricsResult(complicateMetricInfo.metric(), metricsEndpoint);
-        double secondResult = MetricUtility.getMetricsResult(complicateMetricInfo.metric(), metricsEndpoint);
+        double secondResult = MetricUtility.getMetricsResult(complicateMetricInfo.secondMetric(), metricsEndpoint);
 
         MetricCalOperand metricCalOperand = complicateMetricInfo.metricCalOperand();
         switch (metricCalOperand) {

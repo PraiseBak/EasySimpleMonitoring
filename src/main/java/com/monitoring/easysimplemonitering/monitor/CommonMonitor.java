@@ -18,7 +18,7 @@ public class CommonMonitor implements ServerMonitorStrategy{
     @Override
     public boolean isOverThreshold() {
         double val = getMetricsResult();
-        if(metricInfo.metricCalOperand() == MetricCalOperand.BIGGER_THEN) {
+        if(metricInfo.metricCalOperand()== MetricCalOperand.BIGGER_THEN) {
             return val >= metricInfo.valueThreshold();
         }
         return val < metricInfo.valueThreshold();

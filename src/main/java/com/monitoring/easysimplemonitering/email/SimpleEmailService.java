@@ -7,6 +7,7 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -14,16 +15,16 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@ConditionalOnProperty(name = "easy.monitoring.mail.enable", havingValue = "true")
 public class SimpleEmailService {
+
     private final JavaMailSender javaMailSender;
 
-    @Value("${email.sender.name:easy-simple-monitoring@server.com}")
+    @Value("${easy.monitoring.mail.sender.name:easy-simple-monitoring@server.com}")
     private String FROM;
 
-    @Value("${email.receiver.name:easy-simple-monitoring@server.com}")
+    @Value("${easy.monitoring.mail.receiver.name}")
     private String TO;
-
-
 
     public void sendEmail(String subject, String content){
         MimeMessage message = javaMailSender.createMimeMessage();
@@ -35,6 +36,7 @@ public class SimpleEmailService {
             helper.setText(content,true);
             javaMailSender.send(message);
         } catch (MessagingException e) {
+            System.out.println(FROM + "," + TO);
             log.warn(MonitoringError.CANNOT_FIND_EMAIL);
         }
     }
