@@ -17,11 +17,11 @@ public class CommonMonitor implements ServerMonitorStrategy{
 
     @Override
     public boolean isOverThreshold() {
-        double val = getMetricsResult();
+        double currentMetricResult = getMetricsResult();
         if(metricInfo.metricCalOperand()== MetricCalOperand.BIGGER_THEN) {
-            return val >= metricInfo.valueThreshold();
+            return currentMetricResult >= metricInfo.valueThreshold();
         }
-        return val < metricInfo.valueThreshold();
+        return currentMetricResult < metricInfo.valueThreshold();
     }
 
     @Override

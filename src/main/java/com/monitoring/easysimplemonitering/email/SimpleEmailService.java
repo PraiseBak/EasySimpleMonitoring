@@ -20,7 +20,7 @@ public class SimpleEmailService {
 
     private final JavaMailSender javaMailSender;
 
-    @Value("${easy.monitoring.mail.sender.name:easy-simple-monitoring@server.com}")
+    @Value("${easy.monitoring.mail.sender.name}")
     private String FROM;
 
     @Value("${easy.monitoring.mail.receiver.name}")
