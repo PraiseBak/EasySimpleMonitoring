@@ -4,6 +4,17 @@
 # 사용법
 gradlew build 후 라이브러리를 import하면 됩니다
 
+## 예제)
+![img.png](gradlew_example.png)   
+위와 같이 build.gradle에서 설정
+
+![img.png](img.png)
+위와 같이 메인 애플리케이션에서 Import 및 스케줄링 설정   
+
+![img_1.png](img_1.png)
+
+위와 같은 문구가 출력되면 설치 성공!
+
 # 설정
 ```
 #email send를 활성화시 다음의 프로퍼티를 모두 작성해줘야합니다
@@ -23,8 +34,9 @@ easy.monitoring.mail.sender.name=
 #easy.monitoring.disk.free.threshold=1073741824
 #easy.monitoring.memory.usage.threshold=80
 #easy.monitoring.cpu.usage.threshold=80
-
-
 ```
+
+
+
 
 
