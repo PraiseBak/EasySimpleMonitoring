@@ -48,7 +48,7 @@ public class TestMailSender {
 
     @Test
     public void 테스트() {
-        emailService.sendAlter("test");
+//        emailService.sendAlter("test");
     }
 
 

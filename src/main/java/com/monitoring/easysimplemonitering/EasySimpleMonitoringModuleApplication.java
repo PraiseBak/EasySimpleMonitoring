@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class EasySimpleMonitoringModuleApplication {
     public static void main(String[] args) {
+
         SpringApplication.run(EasySimpleMonitoringModuleApplication.class, args);
     }
 

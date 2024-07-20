@@ -54,6 +54,8 @@ public class ServerStatusMonitor {
                 DISK_METRIC_WARN_MSG,MetricCalOperand.SMALLER));
         commonMetricMap.put(CPU_USAGE_METRIC, new CommonMetricInfo(CPU_USAGE_METRIC,cpuUsageThreshold,
                 CPU_USAGE_METRIC_WARN_MSG,MetricCalOperand.BIGGER_THEN));
+
+        log.info("EasySimpleMonitoring Initial Complete");
     }
 
 
