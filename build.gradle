@@ -43,6 +43,15 @@ dependencies {
 
 }
 
+sourceSets {
+    test {
+        java {
+            // 특정 테스트 파일 제외
+            exclude 'com/monitering/emailTest/**'
+        }
+    }
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }

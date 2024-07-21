@@ -7,7 +7,9 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -22,10 +24,8 @@ public class SimpleEmailService {
     private final JavaMailSender javaMailSender;
 
     @PostConstruct
-    public void test(){
-        System.out.println("TEST");
-        System.out.println(FROM);
-        System.out.println(TO);
+    public void init(){
+        log.info(String.format("SimpleEmailService Enable With From = %s To = %s",FROM,TO));
     }
 
     @Value("${easy.monitoring.mail.sender.name}")
