@@ -2,6 +2,7 @@
 package com.monitoring.easysimplemonitering.email;
 
 import com.monitoring.easysimplemonitering.utility.MonitoringError;
+import jakarta.annotation.PostConstruct;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,13 @@ public class SimpleEmailService {
 
     private final JavaMailSender javaMailSender;
 
+    @PostConstruct
+    public void test(){
+        System.out.println("TEST");
+        System.out.println(FROM);
+        System.out.println(TO);
+    }
+
     @Value("${easy.monitoring.mail.sender.name}")
     private String FROM;
 
@@ -32,6 +40,7 @@ public class SimpleEmailService {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setFrom(FROM);
             helper.setTo(TO);
+
             helper.setSubject(subject);
             helper.setText(content,true);
             javaMailSender.send(message);
@@ -40,6 +49,7 @@ public class SimpleEmailService {
             log.warn(MonitoringError.CANNOT_FIND_EMAIL);
         }
     }
+
 
     public void sendAlter(String content) {
         try{

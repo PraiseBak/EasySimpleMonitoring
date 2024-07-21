@@ -9,7 +9,7 @@ gradlew build 후 라이브러리를 import하면 됩니다
 위와 같이 build.gradle에서 설정
 
 ![img.png](img.png)
-위와 같이 메인 애플리케이션에서 Import 및 스케줄링 설정   
+위와 같이 메인 애플리케이션에서 Import 및 스케줄링 설정
 
 ![img_1.png](img_1.png)
 
