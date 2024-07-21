@@ -38,4 +38,4 @@ out/
 ### VS Code ###
 .vscode/
 
-/src/test
+/src/test/java/com/monitering/emailTest/
